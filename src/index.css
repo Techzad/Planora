@@ -1,0 +1,158 @@
+@import "tailwindcss";
+
+:root {
+  --bg-primary: #090d16;
+  --text-primary: #f1f5f9;
+  --text-secondary: #94a3b8;
+  --glass-bg: rgba(15, 23, 42, 0.6);
+  --glass-border: rgba(255, 255, 255, 0.08);
+  --card-bg: rgba(2, 6, 23, 0.35);
+  --card-border: rgba(255, 255, 255, 0.05);
+  --divider: rgba(255, 255, 255, 0.05);
+  --panel-bg: rgba(15, 23, 42, 0.4);
+  --input-bg: rgba(15, 23, 42, 0.3);
+}
+
+.light-mode {
+  --bg-primary: #f1f5f9;
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+  --glass-bg: rgba(255, 255, 255, 0.75);
+  --glass-border: rgba(15, 23, 42, 0.08);
+  --card-bg: rgba(255, 255, 255, 0.9);
+  --card-border: rgba(15, 23, 42, 0.06);
+  --divider: rgba(15, 23, 42, 0.06);
+  --panel-bg: rgba(255, 255, 255, 0.6);
+  --input-bg: rgba(255, 255, 255, 0.95);
+}
+
+@layer utilities {
+  .theme-bg {
+    background-color: var(--bg-primary) !important;
+  }
+  .theme-text {
+    color: var(--text-primary) !important;
+  }
+  .theme-text-secondary {
+    color: var(--text-secondary) !important;
+  }
+  .frosted-glass {
+    background: var(--glass-bg) !important;
+    backdrop-filter: blur(12px) !important;
+    border: 1px solid var(--glass-border) !important;
+  }
+  .theme-card {
+    background: var(--card-bg) !important;
+    border: 1px solid var(--card-border) !important;
+  }
+  .theme-panel {
+    background: var(--panel-bg) !important;
+    border: 1px solid var(--divider) !important;
+  }
+  .theme-input {
+    background: var(--input-bg) !important;
+    border: 1px solid var(--glass-border) !important;
+  }
+  .theme-divider {
+    border-color: var(--divider) !important;
+  }
+  .indigo-glow {
+    box-shadow: 0 0 15px rgba(99, 102, 241, 0.2) !important;
+  }
+  .violet-glow {
+    box-shadow: 0 0 15px rgba(139, 92, 246, 0.2) !important;
+  }
+  .status-pulse {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #10b981;
+    box-shadow: 0 0 8px #10b981;
+    animation: pulse 2s infinite;
+  }
+}
+
+/* Light Mode Overrides for hardcoded colors to maintain WCAG contrast and consistent aesthetics */
+.light-mode .text-white,
+.light-mode .text-zinc-100,
+.light-mode .text-zinc-200 {
+  color: #0f172a !important; /* Slate 900 */
+}
+
+.light-mode .text-zinc-300,
+.light-mode .text-zinc-400 {
+  color: #334155 !important; /* Slate 700 */
+}
+
+.light-mode .text-zinc-500,
+.light-mode .text-slate-500 {
+  color: #64748b !important; /* Slate 500 */
+}
+
+.light-mode .bg-slate-950\/35,
+.light-mode .bg-slate-900\/40,
+.light-mode .bg-slate-950\/45,
+.light-mode .bg-[#090d16]\/20,
+.light-mode .bg-[#090d16]\/40,
+.light-mode .bg-slate-950\/20,
+.light-mode .bg-slate-950\/60 {
+  background-color: rgba(15, 23, 42, 0.04) !important;
+}
+
+.light-mode .border-white\/5,
+.light-mode .border-white\/10 {
+  border-color: rgba(15, 23, 42, 0.08) !important;
+}
+
+.light-mode .bg-zinc-900,
+.light-mode .bg-zinc-800 {
+  background-color: #f1f5f9 !important; /* Slate 100 */
+  color: #0f172a !important;
+}
+
+.light-mode .bg-zinc-900\/60,
+.light-mode .bg-slate-900\/50,
+.light-mode .bg-slate-900\/40 {
+  background-color: rgba(255, 255, 255, 0.95) !important;
+  color: #0f172a !important;
+}
+
+.light-mode .hover\:bg-zinc-800:hover,
+.light-mode .hover\:bg-zinc-700:hover {
+  background-color: #e2e8f0 !important; /* Slate 200 */
+}
+
+.light-mode .border-zinc-800,
+.light-mode .border-zinc-700 {
+  border-color: #e2e8f0 !important; /* Slate 200 */
+}
+
+/* Maintain clean calendar layout borders in light mode */
+.light-mode .divide-zinc-800 > :not([hidden]) ~ :not([hidden]) {
+  border-color: #cbd5e1 !important;
+}
+
+@keyframes pulse {
+  0% { opacity: 1; }
+  50% { opacity: 0.4; }
+  100% { opacity: 1; }
+}
+
+/* Custom scroll hide helper */
+.scroll-hide::-webkit-scrollbar {
+  display: none;
+}
+.scroll-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Custom Brand Font styles for Planora */
+.brand-font {
+  font-family: 'Syne', sans-serif !important;
+  letter-spacing: -0.03em !important;
+}
+
+.brand-sub-font {
+  font-family: 'Outfit', sans-serif !important;
+}

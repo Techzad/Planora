@@ -1,0 +1,81 @@
+{
+  "entities": {
+    "User": {
+      "title": "User Profile",
+      "description": "User preferences, streak data, and account details",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string", "description": "The user's unique Firebase Auth ID" },
+        "name": { "type": "string", "description": "The user's display name" },
+        "email": { "type": "string", "description": "The user's email address" },
+        "streak": { "type": "integer", "description": "The current focus streak" },
+        "workdayStart": { "type": "string", "description": "Start of working hours (HH:MM)" },
+        "workdayEnd": { "type": "string", "description": "End of working hours (HH:MM)" },
+        "defaultTaskDuration": { "type": "integer", "description": "Default duration of a task in minutes" },
+        "theme": { "type": "string", "description": "Color theme choice" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["uid", "name", "email"]
+    },
+    "Task": {
+      "title": "Task",
+      "description": "A scheduled task",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "Task unique ID" },
+        "userId": { "type": "string", "description": "The owner's Auth UID" },
+        "title": { "type": "string", "description": "Task title" },
+        "description": { "type": "string", "description": "Task description" },
+        "dueDate": { "type": "string", "description": "Due date (YYYY-MM-DD)" },
+        "estimatedMinutes": { "type": "integer", "description": "Duration in minutes" },
+        "priority": { "type": "string", "enum": ["Low", "Medium", "High", "Urgent"] },
+        "status": { "type": "string", "enum": ["Todo", "In Progress", "Completed"] },
+        "category": { "type": "string", "enum": ["Work", "Personal", "Health", "Deep Work"] },
+        "riskLevel": { "type": "string", "enum": ["Low", "Medium", "High"] },
+        "subtasks": {
+          "type": "array",
+          "description": "List of subtasks"
+        },
+        "isGCalSynced": { "type": "boolean" },
+        "gCalEventId": { "type": "string" },
+        "startTime": { "type": "string" },
+        "endTime": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "userId", "title", "dueDate", "priority", "status", "category"]
+    },
+    "GCalEvent": {
+      "title": "GCal Event",
+      "description": "Cached or managed Google Calendar event",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "userId": { "type": "string" },
+        "summary": { "type": "string" },
+        "description": { "type": "string" },
+        "start": { "type": "object" },
+        "end": { "type": "object" },
+        "colorId": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "userId", "summary"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "User",
+      "description": "Stores user settings, theme, and streak preferences"
+    },
+    "/tasks/{taskId}": {
+      "schema": "Task",
+      "description": "Stores all scheduled tasks mapped to an owner user ID"
+    },
+    "/gcal_events/{eventId}": {
+      "schema": "GCalEvent",
+      "description": "Stores Google Calendar events mapped to an owner user ID"
+    }
+  }
+}

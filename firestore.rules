@@ -1,0 +1,108 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Global safety net
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Reusable global helpers
+    function isSignedIn() {
+      return request.auth != null;
+    }
+    
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    function incoming() {
+      return request.resource.data;
+    }
+
+    function existing() {
+      return resource.data;
+    }
+
+    // Schema Validation Helpers
+    function isValidUser(data) {
+      return data.keys().hasAll(['uid', 'name', 'email'])
+        && data.keys().size() >= 3
+        && data.uid is string
+        && data.name is string && data.name.size() <= 100
+        && data.email is string && data.email.size() <= 100
+        && (!('streak' in data) || data.streak is int)
+        && (!('workdayStart' in data) || data.workdayStart is string)
+        && (!('workdayEnd' in data) || data.workdayEnd is string)
+        && (!('defaultTaskDuration' in data) || data.defaultTaskDuration is int)
+        && (!('theme' in data) || data.theme is string);
+    }
+
+    // Standard types & boundary checks on Task data
+    function isValidTask(data) {
+      return data.keys().hasAll(['id', 'userId', 'title', 'dueDate', 'priority', 'status', 'category'])
+        && data.id is string
+        && data.userId is string
+        && data.title is string && data.title.size() <= 200
+        && (!('description' in data) || (data.description is string && data.description.size() <= 5000))
+        && data.dueDate is string && data.dueDate.size() <= 20
+        && (!('estimatedMinutes' in data) || data.estimatedMinutes is int)
+        && data.priority is string && data.priority in ['Low', 'Medium', 'High', 'Urgent']
+        && data.status is string && data.status in ['Todo', 'In Progress', 'Completed']
+        && data.category is string && data.category in ['Work', 'Personal', 'Health', 'Deep Work']
+        && (!('riskLevel' in data) || (data.riskLevel is string && data.riskLevel in ['Low', 'Medium', 'High']))
+        && (!('subtasks' in data) || data.subtasks is list)
+        && (!('isGCalSynced' in data) || data.isGCalSynced is bool)
+        && (!('gCalEventId' in data) || data.gCalEventId is string)
+        && (!('startTime' in data) || data.startTime is string)
+        && (!('endTime' in data) || data.endTime is string);
+    }
+
+    function isValidGCalEvent(data) {
+      return data.keys().hasAll(['id', 'userId', 'summary'])
+        && data.id is string
+        && data.userId is string
+        && data.summary is string && data.summary.size() <= 300
+        && (!('description' in data) || (data.description is string && data.description.size() <= 5000))
+        && (!('start' in data) || data.start is map)
+        && (!('end' in data) || data.end is map)
+        && (!('colorId' in data) || data.colorId is string);
+    }
+
+    // Rules for User document
+    match /users/{userId} {
+      allow get: if isOwner(userId) && isValidId(userId);
+      allow create: if isOwner(userId) && isValidId(userId) && isValidUser(incoming());
+      allow update: if isOwner(userId) && isValidId(userId) && isValidUser(incoming()) && (
+        incoming().diff(existing()).affectedKeys().hasOnly(['name', 'email', 'streak', 'workdayStart', 'workdayEnd', 'defaultTaskDuration', 'theme'])
+      );
+      allow delete: if false; // Users cannot delete accounts directly from client
+    }
+
+    // Rules for Tasks collection
+    match /tasks/{taskId} {
+      allow get: if isSignedIn() && isValidId(taskId) && existing().userId == request.auth.uid;
+      allow list: if isSignedIn() && resource.data.userId == request.auth.uid;
+      allow create: if isSignedIn() && isValidId(taskId) && incoming().userId == request.auth.uid && isValidTask(incoming());
+      allow update: if isSignedIn() && isValidId(taskId) && existing().userId == request.auth.uid && incoming().userId == request.auth.uid && isValidTask(incoming()) && (
+        // Allow standard modifications on valid tasks
+        incoming().diff(existing()).affectedKeys().hasOnly(['title', 'description', 'dueDate', 'estimatedMinutes', 'priority', 'status', 'category', 'riskLevel', 'subtasks', 'isGCalSynced', 'gCalEventId', 'startTime', 'endTime'])
+      );
+      allow delete: if isSignedIn() && isValidId(taskId) && existing().userId == request.auth.uid;
+    }
+
+    // Rules for Google Calendar Events cache
+    match /gcal_events/{eventId} {
+      allow get: if isSignedIn() && isValidId(eventId) && existing().userId == request.auth.uid;
+      allow list: if isSignedIn() && resource.data.userId == request.auth.uid;
+      allow create: if isSignedIn() && isValidId(eventId) && incoming().userId == request.auth.uid && isValidGCalEvent(incoming());
+      allow update: if isSignedIn() && isValidId(eventId) && existing().userId == request.auth.uid && incoming().userId == request.auth.uid && isValidGCalEvent(incoming()) && (
+        incoming().diff(existing()).affectedKeys().hasOnly(['summary', 'description', 'start', 'end', 'colorId'])
+      );
+      allow delete: if isSignedIn() && isValidId(eventId) && existing().userId == request.auth.uid;
+    }
+  }
+}

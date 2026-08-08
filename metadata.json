@@ -1,0 +1,6 @@
+{
+  "name": "Planora",
+  "description": "A responsive full-stack task scheduler dashboard integrated with Google Calendar and powered by Gemini AI.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
