@@ -1,7 +1,7 @@
 import { LayoutDashboard, Kanban, Calendar, Sparkles, BarChart3, Settings, LogOut } from "lucide-react";
 import { motion } from "motion/react";
 // @ts-ignore
-import logoIcon from "../assets/images/lumina_logo_icon_1786225083037.jpg";
+import logoIcon from "../assets/images/veluntra_logo_dark_bg_1786269381371.jpg";
 
 interface SidebarProps {
   currentTab: string;
@@ -14,7 +14,7 @@ interface SidebarProps {
 export default function Sidebar({ currentTab, setCurrentTab, streak, currentUser, onLogout }: SidebarProps) {
   const menuItems = [
     { id: "dashboard", label: "Dashboard", icon: LayoutDashboard },
-    { id: "kanban", label: "Kanban Board", icon: Kanban },
+    { id: "kanban", label: "Task Board", icon: Kanban },
     { id: "calendar", label: "Calendar View", icon: Calendar },
     { id: "assistant", label: "AI Planner", icon: Sparkles },
     { id: "analytics", label: "Analytics", icon: BarChart3 },
@@ -30,12 +30,12 @@ export default function Sidebar({ currentTab, setCurrentTab, streak, currentUser
       <div className="p-6 border-b border-white/5 flex items-center space-x-3">
         <img
           src={logoIcon}
-          alt="Planora"
-          className="w-10 h-10 rounded-xl object-cover indigo-glow shadow-lg"
+          alt="Veluntra"
+          className="w-12 h-12 rounded-2xl object-cover indigo-glow shadow-lg"
           referrerPolicy="no-referrer"
         />
         <div>
-          <h1 className="brand-font font-black text-white text-lg tracking-wide">Planora</h1>
+          <h1 className="brand-font font-black text-white text-lg tracking-wide">Veluntra</h1>
           <span className="brand-sub-font text-xs text-indigo-400 font-medium">AI Task Scheduler</span>
         </div>
       </div>
@@ -88,14 +88,14 @@ export default function Sidebar({ currentTab, setCurrentTab, streak, currentUser
         <div className="flex items-center justify-between px-3 py-2">
           <div className="flex items-center space-x-3 overflow-hidden">
             <img
-              src={`https://api.dicebear.com/7.x/bottts/svg?seed=${currentUser?.email || "sarah"}`}
+              src={`https://api.dicebear.com/7.x/bottts/svg?seed=${currentUser?.email || "johndoe"}`}
               alt="User profile"
               className="w-10 h-10 rounded-full border border-zinc-700 bg-indigo-950/40 object-cover flex-shrink-0"
               referrerPolicy="no-referrer"
             />
             <div className="flex-1 overflow-hidden">
-              <h4 className="text-sm font-medium text-white truncate">{currentUser?.name || "Sarah Jenkins"}</h4>
-              <p className="text-xs text-zinc-500 truncate">{currentUser?.email || "techseries358@gmail.com"}</p>
+              <h4 className="text-sm font-medium text-white truncate">{currentUser?.name || "John Doe"}</h4>
+              <p className="text-xs text-zinc-500 truncate">{currentUser?.email || "johndoe@gmail.com"}</p>
             </div>
           </div>
 

@@ -82,7 +82,7 @@ export default function App() {
 
     if (cachedConnected === "true") {
       setIsGCalConnected(true);
-      setUserGCalEmail(cachedEmail || "techseries358@gmail.com");
+      setUserGCalEmail(cachedEmail || "johndoe@gmail.com");
     }
 
     // Set up real-time Firebase Auth listener
@@ -238,7 +238,7 @@ export default function App() {
 
   const handleLoginSuccess = (user: { name: string; email: string }) => {
     setCurrentUser(user);
-    showToast(`Welcome to Planora, ${user.name}!`, "success");
+    showToast(`Welcome to Veluntra, ${user.name}!`, "success");
     window.scrollTo({ top: 0, behavior: "instant" });
   };
 
@@ -435,10 +435,10 @@ export default function App() {
           if (tokenResponse && tokenResponse.access_token) {
             localStorage.setItem("gcal_access_token", tokenResponse.access_token);
             localStorage.setItem("gcal_gcal_connected", "true");
-            localStorage.setItem("gcal_gcal_email", "techseries358@gmail.com");
+            localStorage.setItem("gcal_gcal_email", "johndoe@gmail.com");
 
             setIsGCalConnected(true);
-            setUserGCalEmail("techseries358@gmail.com");
+            setUserGCalEmail("johndoe@gmail.com");
             setLastSyncedTime(new Date().toLocaleTimeString());
             showToast("Authenticated successfully with Google Calendar!");
 
@@ -534,7 +534,7 @@ export default function App() {
 
       const body = {
         summary: `🎯 ${task.title}`,
-        description: `${task.description || ""}\n\nPriority: ${task.priority}\nCategory: ${task.category}\n\nScheduled automatically via Planora.`,
+        description: `${task.description || ""}\n\nPriority: ${task.priority}\nCategory: ${task.category}\n\nScheduled automatically via Veluntra.`,
         start: {
           dateTime: `${task.dueDate}T${sHour}:00`,
           timeZone: "America/Los_Angeles"

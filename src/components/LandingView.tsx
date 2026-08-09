@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { Sparkles, Calendar, ArrowRight, Shield, Clock, Zap, User, Mail, Lock, Eye, EyeOff, LayoutDashboard, ChevronRight, Star, Check, ChevronDown, Users, Flame, TrendingUp } from "lucide-react";
 // @ts-ignore
-import logoIcon from "../assets/images/lumina_logo_icon_1786225083037.jpg";
+import logoIcon from "../assets/images/veluntra_logo_dark_bg_1786269381371.jpg";
 
 import { auth, googleProvider } from "../firebase";
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword, updateProfile, signInWithPopup } from "firebase/auth";
@@ -48,7 +48,7 @@ export default function LandingView({ onLoginSuccess, isDarkMode }: LandingViewP
       }
     }
     // Pre-register a default account for quick demo testing
-    const defaultUser = { name: "Sarah Jenkins", email: "techseries358@gmail.com", password: "password123" };
+    const defaultUser = { name: "John Doe", email: "johndoe@gmail.com", password: "password123" };
     localStorage.setItem("aura_registered_users", JSON.stringify([defaultUser]));
     return [defaultUser];
   };
@@ -97,7 +97,15 @@ export default function LandingView({ onLoginSuccess, isDarkMode }: LandingViewP
       }
     } catch (err: any) {
       console.error(err);
-      if (err.code === "auth/email-already-in-use") {
+      if (err.code === "auth/operation-not-allowed") {
+        setError(
+          "Email & Password authentication is not enabled in your Firebase project. To enable it:\n\n" +
+          "1. Open the Firebase Console.\n" +
+          "2. Go to Authentication > Sign-in method.\n" +
+          "3. Enable the 'Email/Password' sign-in provider.\n\n" +
+          "Alternatively, you can sign in with Google or click 'Try Demo Mode' to access guest mode."
+        );
+      } else if (err.code === "auth/email-already-in-use") {
         setError("An account with this email already exists.");
       } else {
         setError(err.message || "Sign up failed.");
@@ -128,7 +136,15 @@ export default function LandingView({ onLoginSuccess, isDarkMode }: LandingViewP
       }
     } catch (err: any) {
       console.error(err);
-      if (err.code === "auth/user-not-found" || err.code === "auth/wrong-password" || err.code === "auth/invalid-credential") {
+      if (err.code === "auth/operation-not-allowed") {
+        setError(
+          "Email & Password authentication is not enabled in your Firebase project. To enable it:\n\n" +
+          "1. Open the Firebase Console.\n" +
+          "2. Go to Authentication > Sign-in method.\n" +
+          "3. Enable the 'Email/Password' sign-in provider.\n\n" +
+          "Alternatively, you can sign in with Google or click 'Try Demo Mode' to access guest mode."
+        );
+      } else if (err.code === "auth/user-not-found" || err.code === "auth/wrong-password" || err.code === "auth/invalid-credential") {
         setError("Invalid email or password.");
       } else {
         setError(err.message || "Sign in failed.");
@@ -142,12 +158,12 @@ export default function LandingView({ onLoginSuccess, isDarkMode }: LandingViewP
     setError("");
     setIsLoading(true);
     try {
-      const demoEmail = "demo_sarah@planora.com";
+      const demoEmail = "johndoe@gmail.com";
       const demoPassword = "password123";
       try {
         const result = await signInWithEmailAndPassword(auth, demoEmail, demoPassword);
         const u = {
-          name: result.user.displayName || "Sarah Jenkins",
+          name: result.user.displayName || "John Doe",
           email: demoEmail
         };
         localStorage.setItem("aura_user", JSON.stringify(u));
@@ -155,8 +171,8 @@ export default function LandingView({ onLoginSuccess, isDarkMode }: LandingViewP
       } catch (err: any) {
         if (err.code === "auth/user-not-found" || err.code === "auth/invalid-credential" || err.code === "auth/user-disabled") {
           const result = await createUserWithEmailAndPassword(auth, demoEmail, demoPassword);
-          await updateProfile(result.user, { displayName: "Sarah Jenkins" });
-          const u = { name: "Sarah Jenkins", email: demoEmail };
+          await updateProfile(result.user, { displayName: "John Doe" });
+          const u = { name: "John Doe", email: demoEmail };
           localStorage.setItem("aura_user", JSON.stringify(u));
           onLoginSuccess(u);
         } else {
@@ -165,7 +181,7 @@ export default function LandingView({ onLoginSuccess, isDarkMode }: LandingViewP
       }
     } catch (err: any) {
       console.error(err);
-      const demoUser = { name: "Sarah Jenkins", email: "techseries358@gmail.com" };
+      const demoUser = { name: "John Doe", email: "johndoe@gmail.com" };
       localStorage.setItem("aura_user", JSON.stringify(demoUser));
       onLoginSuccess(demoUser);
     } finally {
@@ -184,12 +200,12 @@ export default function LandingView({ onLoginSuccess, isDarkMode }: LandingViewP
         <div className="flex items-center space-x-3 cursor-pointer" onClick={() => setView("landing")}>
           <img
             src={logoIcon}
-            alt="Planora"
-            className="w-10 h-10 rounded-xl object-cover indigo-glow shadow-lg"
+            alt="Veluntra"
+            className="w-14 h-14 rounded-2xl object-cover indigo-glow shadow-lg"
             referrerPolicy="no-referrer"
           />
           <div>
-            <span className="brand-font font-black text-white text-xl tracking-wide block">Planora</span>
+            <span className="brand-font font-black text-white text-xl tracking-wide block">Veluntra</span>
             <span className="brand-sub-font text-[10px] text-indigo-400 font-bold uppercase tracking-widest block -mt-1">AI Scheduler</span>
           </div>
         </div>
@@ -259,7 +275,7 @@ export default function LandingView({ onLoginSuccess, isDarkMode }: LandingViewP
                   </h1>
 
                   <p className="text-zinc-400 text-base sm:text-lg max-w-xl leading-relaxed">
-                    Planora is a premium smart task organizer that auto-schedules your week around your real Google Calendar events, detects workflow conflicts instantly, and features manual high-priority drag-and-drop reordering.
+                    Veluntra is a premium smart task organizer that auto-schedules your week around your real Google Calendar events, detects workflow conflicts instantly, and features manual high-priority drag-and-drop reordering.
                   </p>
 
                   <div className="flex flex-col sm:flex-row items-stretch sm:items-center space-y-3 sm:space-y-0 sm:space-x-4 pt-4">
@@ -306,7 +322,7 @@ export default function LandingView({ onLoginSuccess, isDarkMode }: LandingViewP
                         <div className="w-3 h-3 rounded-full bg-rose-500" />
                         <div className="w-3 h-3 rounded-full bg-amber-500" />
                         <div className="w-3 h-3 rounded-full bg-emerald-500" />
-                        <span className="text-[10px] font-bold text-slate-500 tracking-wider uppercase ml-2">Planora Live Preview</span>
+                        <span className="text-[10px] font-bold text-slate-500 tracking-wider uppercase ml-2">Veluntra Live Preview</span>
                       </div>
                       <div className="px-2 py-0.5 rounded bg-indigo-500/10 border border-indigo-500/20 text-[10px] text-indigo-400 font-bold">
                         🔥 5 Day Streak
@@ -364,7 +380,7 @@ export default function LandingView({ onLoginSuccess, isDarkMode }: LandingViewP
                     Built for Maximum Productivity
                   </h2>
                   <p className="text-zinc-400 text-base leading-relaxed">
-                    Planora coordinates your tasks, calendars, and focus blocks so you never have to worry about planning.
+                    Veluntra coordinates your tasks, calendars, and focus blocks so you never have to worry about planning.
                   </p>
                 </div>
                 
@@ -422,7 +438,7 @@ export default function LandingView({ onLoginSuccess, isDarkMode }: LandingViewP
                     Loved by High-Performers
                   </h2>
                   <p className="text-zinc-400 text-base leading-relaxed">
-                    See why developers, managers, and creators rely on Planora to protect their time.
+                    See why developers, managers, and creators rely on Veluntra to protect their time.
                   </p>
                 </div>
                 
@@ -436,7 +452,7 @@ export default function LandingView({ onLoginSuccess, isDarkMode }: LandingViewP
                         ))}
                       </div>
                       <p className="text-zinc-300 text-sm leading-relaxed italic">
-                        "Planora has completely transformed how I structure my day. The real-time GCal integration is flawless and prevents any overlapping meetings!"
+                        "Veluntra has completely transformed how I structure my day. The real-time GCal integration is flawless and prevents any overlapping meetings!"
                       </p>
                     </div>
                     <div className="flex items-center space-x-3 pt-4 border-t border-white/5">
@@ -487,10 +503,10 @@ export default function LandingView({ onLoginSuccess, isDarkMode }: LandingViewP
                     </div>
                     <div className="flex items-center space-x-3 pt-4 border-t border-white/5">
                       <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-amber-500 to-rose-500 flex items-center justify-center text-white font-bold text-sm uppercase">
-                        SJ
+                        JD
                       </div>
                       <div>
-                        <h4 className="text-sm font-bold text-white">Sarah Jenkins</h4>
+                        <h4 className="text-sm font-bold text-white">John Doe</h4>
                         <p className="text-xs text-zinc-500">Creative Director</p>
                       </div>
                     </div>
@@ -515,15 +531,15 @@ export default function LandingView({ onLoginSuccess, isDarkMode }: LandingViewP
                   {[
                     {
                       q: "How does Google Calendar synchronization work?",
-                      a: "Planora safely syncs with your Google Calendar using secure OAuth. It reads your existing events and automatically schedules your tasks around them to prevent any overlaps."
+                      a: "Veluntra safely syncs with your Google Calendar using secure OAuth. It reads your existing events and automatically schedules your tasks around them to prevent any overlaps."
                     },
                     {
                       q: "What is the AI Conflict Guard?",
                       a: "The AI Conflict Guard continuously monitors your queue. If a newly scheduled task overlaps with an existing GCal event or another high-priority task, it instantly highlights the conflict so you can drag and reorder."
                     },
                     {
-                      q: "Can I use Planora completely offline?",
-                      a: "Yes! Planora supports local storage, so all your schedules and streak tracking will be saved directly on your device even if you lose internet connection."
+                      q: "Can I use Veluntra completely offline?",
+                      a: "Yes! Veluntra supports local storage, so all your schedules and streak tracking will be saved directly on your device even if you lose internet connection."
                     },
                     {
                       q: "Is my personal calendar data secure?",
@@ -571,11 +587,11 @@ export default function LandingView({ onLoginSuccess, isDarkMode }: LandingViewP
                   <div className="flex items-center space-x-3">
                     <img
                       src={logoIcon}
-                      alt="Planora"
-                      className="w-8 h-8 rounded-lg object-cover indigo-glow"
+                      alt="Veluntra"
+                      className="w-12 h-12 rounded-xl object-cover indigo-glow"
                       referrerPolicy="no-referrer"
                     />
-                    <span className="brand-font font-black text-white text-md tracking-wider">Planora</span>
+                    <span className="brand-font font-black text-white text-md tracking-wider">Veluntra</span>
                   </div>
                   <p className="text-xs text-zinc-500 leading-relaxed max-w-xs">
                     Plan Less. Focus More. Autonomous time management built for creators, engineers, and modern product teams.
@@ -615,7 +631,7 @@ export default function LandingView({ onLoginSuccess, isDarkMode }: LandingViewP
                   <div className="w-12 h-12 rounded-xl bg-gradient-to-tr from-indigo-500 via-purple-500 to-pink-500 flex items-center justify-center text-white shadow-lg shadow-purple-500/20">
                     <Star className="w-6 h-6 fill-white" />
                   </div>
-                  <span className="text-[10px] text-zinc-600 mt-2 text-left md:text-right">Copyright &copy; {new Date().getFullYear()} Planora.</span>
+                  <span className="text-[10px] text-zinc-600 mt-2 text-left md:text-right">Copyright &copy; {new Date().getFullYear()} Veluntra.</span>
                 </div>
               </footer>
             </motion.div>
@@ -633,11 +649,11 @@ export default function LandingView({ onLoginSuccess, isDarkMode }: LandingViewP
               <div className="border border-white/10 bg-slate-950/50 backdrop-blur-xl rounded-2xl p-8 shadow-2xl text-left">
                 <div className="mb-6">
                   <h2 className="brand-font text-2xl font-black text-white">Create your Account</h2>
-                  <p className="text-sm text-zinc-400 mt-1">Get started with Planora in seconds.</p>
+                  <p className="text-sm text-zinc-400 mt-1">Get started with Veluntra in seconds.</p>
                 </div>
 
                 {error && (
-                  <div className="mb-4 p-3 bg-rose-500/10 border border-rose-500/20 text-rose-400 rounded-xl text-xs font-semibold">
+                  <div className="mb-4 p-3 bg-rose-500/10 border border-rose-500/20 text-rose-400 rounded-xl text-xs font-semibold whitespace-pre-line">
                     {error}
                   </div>
                 )}
@@ -754,12 +770,12 @@ export default function LandingView({ onLoginSuccess, isDarkMode }: LandingViewP
             >
               <div className="border border-white/10 bg-slate-950/50 backdrop-blur-xl rounded-2xl p-8 shadow-2xl text-left">
                 <div className="mb-6">
-                  <h2 className="brand-font text-2xl font-black text-white">Sign In to Planora</h2>
+                  <h2 className="brand-font text-2xl font-black text-white">Sign In to Veluntra</h2>
                   <p className="text-sm text-zinc-400 mt-1">Pick up right where you left your schedules.</p>
                 </div>
 
                 {error && (
-                  <div className="mb-4 p-3 bg-rose-500/10 border border-rose-500/20 text-rose-400 rounded-xl text-xs font-semibold">
+                  <div className="mb-4 p-3 bg-rose-500/10 border border-rose-500/20 text-rose-400 rounded-xl text-xs font-semibold whitespace-pre-line">
                     {error}
                   </div>
                 )}
@@ -869,7 +885,7 @@ export default function LandingView({ onLoginSuccess, isDarkMode }: LandingViewP
       {view !== "landing" && (
         <footer className="w-full py-6 border-t border-white/5 relative z-10 text-center text-xs text-zinc-500">
           <div className="max-w-7xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-4">
-            <span>&copy; {new Date().getFullYear()} Planora Scheduler. All rights reserved.</span>
+            <span>&copy; {new Date().getFullYear()} Veluntra Scheduler. All rights reserved.</span>
             <div className="flex items-center space-x-4">
               <span className="hover:text-zinc-300 cursor-pointer">Security</span>
               <span className="hover:text-zinc-300 cursor-pointer">Privacy Policy</span>

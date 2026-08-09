@@ -72,7 +72,7 @@ export default function SettingsView({
               <div className="bg-emerald-500/5 border border-emerald-500/10 rounded-xl p-4 flex items-center justify-between">
                 <div>
                   <h4 className="text-xs font-bold text-emerald-400 uppercase tracking-wider">Sync Connection Active</h4>
-                  <p className="text-sm text-zinc-200 mt-1">{userGCalEmail || "techseries358@gmail.com"}</p>
+                  <p className="text-sm text-zinc-200 mt-1">{userGCalEmail || "johndoe@gmail.com"}</p>
                   <p className="text-[10px] text-zinc-500 mt-0.5">Permissions granted to schedule task events automatically</p>
                 </div>
                 <button
