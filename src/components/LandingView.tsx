@@ -192,8 +192,10 @@ export default function LandingView({ onLoginSuccess, isDarkMode }: LandingViewP
   return (
     <div className={`min-h-screen w-full flex flex-col justify-between theme-bg theme-text select-none overflow-x-hidden relative transition-colors duration-300`}>
       {/* Background Decorative Blobs */}
-      <div className="absolute top-[-20%] left-[-10%] w-[50%] h-[50%] rounded-full bg-indigo-600/10 blur-[150px] pointer-events-none" />
-      <div className="absolute bottom-[-25%] right-[-10%] w-[60%] h-[60%] rounded-full bg-violet-600/10 blur-[180px] pointer-events-none" />
+      <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
+        <div className="absolute top-[-20%] left-[-10%] w-[50%] h-[50%] rounded-full bg-indigo-600/10 blur-[150px]" />
+        <div className="absolute bottom-[-25%] right-[-10%] w-[60%] h-[60%] rounded-full bg-violet-600/10 blur-[180px]" />
+      </div>
 
       {/* Header Bar */}
       <header className="w-full max-w-7xl mx-auto px-6 py-6 flex items-center justify-between relative z-10">
