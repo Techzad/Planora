@@ -64,7 +64,7 @@ export default function DailyTimeline({
   };
 
   return (
-    <div className="frosted-glass backdrop-blur-md rounded-2xl p-6 flex flex-col h-[780px] overflow-hidden shadow-xl">
+    <div className="frosted-glass backdrop-blur-md rounded-2xl p-4 md:p-6 flex flex-col h-[600px] md:h-[780px] overflow-hidden shadow-xl">
       <div className="flex items-center justify-between mb-4 border-b border-zinc-800 pb-3">
         <div className="flex items-center space-x-2.5">
           <CalendarDays className="w-5 h-5 text-indigo-400" />

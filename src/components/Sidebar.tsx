@@ -1,4 +1,4 @@
-import { LayoutDashboard, Kanban, Calendar, Sparkles, BarChart3, Settings, LogOut } from "lucide-react";
+import { LayoutDashboard, Kanban, Calendar, Sparkles, BarChart3, Settings, LogOut, X } from "lucide-react";
 import { motion } from "motion/react";
 // @ts-ignore
 import logoIcon from "../assets/images/veluntra_logo_dark_bg_1786269381371.jpg";
@@ -9,9 +9,11 @@ interface SidebarProps {
   streak: number;
   currentUser?: { name: string; email: string } | null;
   onLogout?: () => void;
+  isOpen?: boolean;
+  onClose?: () => void;
 }
 
-export default function Sidebar({ currentTab, setCurrentTab, streak, currentUser, onLogout }: SidebarProps) {
+export default function Sidebar({ currentTab, setCurrentTab, streak, currentUser, onLogout, isOpen = false, onClose }: SidebarProps) {
   const menuItems = [
     { id: "dashboard", label: "Dashboard", icon: LayoutDashboard },
     { id: "kanban", label: "Task Board", icon: Kanban },
@@ -22,23 +24,45 @@ export default function Sidebar({ currentTab, setCurrentTab, streak, currentUser
   ];
 
   return (
-    <aside
-      id="sidebar"
-      className="w-64 frosted-glass flex flex-col h-screen sticky top-0 text-zinc-300 select-none z-10"
-    >
-      {/* Brand Header */}
-      <div className="p-6 border-b border-white/5 flex items-center space-x-3">
-        <img
-          src={logoIcon}
-          alt="Veluntra"
-          className="w-12 h-12 rounded-2xl object-cover indigo-glow shadow-lg"
-          referrerPolicy="no-referrer"
+    <>
+      {/* Backdrop overlay on mobile when open */}
+      {isOpen && (
+        <div
+          className="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 md:hidden"
+          onClick={onClose}
         />
-        <div>
-          <h1 className="brand-font font-black text-white text-lg tracking-wide">Veluntra</h1>
-          <span className="brand-sub-font text-xs text-indigo-400 font-medium">AI Task Scheduler</span>
+      )}
+
+      <aside
+        id="sidebar"
+        className={`w-64 frosted-glass flex flex-col h-screen text-zinc-300 select-none z-50 transition-transform duration-300
+          fixed md:sticky top-0 left-0
+          ${isOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"}
+        `}
+      >
+        {/* Brand Header */}
+        <div className="p-6 border-b border-white/5 flex items-center justify-between">
+          <div className="flex items-center space-x-3">
+            <img
+              src={logoIcon}
+              alt="Veluntra"
+              className="w-12 h-12 rounded-2xl object-cover indigo-glow shadow-lg"
+              referrerPolicy="no-referrer"
+            />
+            <div>
+              <h1 className="brand-font font-black text-white text-lg tracking-wide">Veluntra</h1>
+              <span className="brand-sub-font text-xs text-indigo-400 font-medium">AI Task Scheduler</span>
+            </div>
+          </div>
+          {/* Mobile close button */}
+          <button
+            onClick={onClose}
+            className="md:hidden p-1.5 hover:bg-zinc-800/60 rounded-lg text-zinc-400 hover:text-white transition cursor-pointer"
+            title="Close Menu"
+          >
+            <X className="w-5 h-5" />
+          </button>
         </div>
-      </div>
 
       {/* Navigation Links */}
       <nav className="flex-1 px-4 py-6 space-y-1.5 overflow-y-auto">
@@ -112,5 +136,6 @@ export default function Sidebar({ currentTab, setCurrentTab, streak, currentUser
         </div>
       </div>
     </aside>
+  </>
   );
 }

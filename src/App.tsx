@@ -44,6 +44,7 @@ export default function App() {
   const [selectedDate, setSelectedDate] = useState("2026-08-08");
   const [isDarkMode, setIsDarkMode] = useState(true);
   const [currentUser, setCurrentUser] = useState<{ name: string; email: string } | null>(null);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   // Scheduler & Task States
   const [tasks, setTasks] = useState<Task[]>([]);
@@ -226,6 +227,7 @@ export default function App() {
   // Scroll to top when tab or user status changes
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "instant" });
+    setIsSidebarOpen(false);
   }, [currentUser, currentTab]);
 
   // Save changes to localStorage helper
@@ -820,6 +822,8 @@ export default function App() {
             streak={streak}
             currentUser={currentUser}
             onLogout={handleLogout}
+            isOpen={isSidebarOpen}
+            onClose={() => setIsSidebarOpen(false)}
           />
 
           {/* Main Content Area */}
@@ -836,9 +840,10 @@ export default function App() {
           isSyncing={isSyncing}
           isDarkMode={isDarkMode}
           onToggleTheme={handleToggleTheme}
+          onToggleSidebar={() => setIsSidebarOpen(true)}
         />
 
-        <main className="flex-1 p-8 overflow-y-auto max-w-[1600px] mx-auto w-full">
+        <main className="flex-1 p-4 md:p-8 overflow-y-auto max-w-[1600px] mx-auto w-full">
           {/* TAB 1: OVERVIEW (Main Dashboard) */}
           {currentTab === "dashboard" && (
             <div className="space-y-6">

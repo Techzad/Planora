@@ -52,7 +52,7 @@ export default function AIAdvisor({
   const hoursScheduled = (totalMinutesScheduled / 60).toFixed(1);
 
   return (
-    <div className={`frosted-glass rounded-2xl p-6 flex flex-col overflow-hidden shadow-xl ${className || "h-[780px]"}`}>
+    <div className={`frosted-glass rounded-2xl p-4 md:p-6 flex flex-col overflow-hidden shadow-xl ${className || "h-[500px] md:h-[780px]"}`}>
       {/* Advisor Header */}
       <div className="flex items-center justify-between mb-4 border-b border-white/5 pb-3">
         <div className="flex items-center space-x-2.5">

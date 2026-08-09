@@ -71,7 +71,7 @@ export default function CalendarView({
             <div
               key={day.dateStr}
               onClick={() => onSelectDate(day.dateStr)}
-              className={`rounded-2xl p-4 border transition-all flex flex-col h-[520px] shadow-sm cursor-pointer ${
+              className={`rounded-2xl p-4 border transition-all flex flex-col h-[260px] md:h-[520px] shadow-sm cursor-pointer ${
                 isSelected
                   ? "frosted-glass !border-indigo-500/50 ring-1 ring-indigo-500/20"
                   : "frosted-glass hover:!bg-slate-900/40 border-white/5 hover:border-zinc-700/80"
